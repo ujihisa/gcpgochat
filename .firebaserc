@@ -1,5 +1,14 @@
 {
   "projects": {
     "default": "devs-sandbox"
+  },
+  "targets": {
+    "devs-sandbox": {
+      "hosting": {
+        "gcpgochat": [
+          "gcpgochat"
+        ]
+      }
+    }
   }
 }
