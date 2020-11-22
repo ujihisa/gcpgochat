@@ -2,7 +2,7 @@
   "hosting": [
     {
       "target": "gcpgochat",
-      "public": "public",
+      "public": "build",
       "ignore": [
         "firebase.json",
         "**/.*",
