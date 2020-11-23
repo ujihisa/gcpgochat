@@ -9,36 +9,65 @@ function getLatest(lastId) {
   return dummy.filter((x) => lastId < x.id)
 }
 
+function postMessage(name, body) {
+  console.log("ok")
+}
+
 function App() {
+  const [name, setName] = useState("");
   const [lastId, setLastId] = useState(0);
   const [messages, setMessages] = useState([]);
-  const [pendingMessages, setPendingMessages] = useState([]);
+  const [body, setBody] = useState("");
+  const [loading, setLoading] = useState(false);
 
   return (
     <div className="App">
       <header className="App-header">
-        <button onClick={(event) => {
-          const newMessages = getLatest(lastId)
-          console.log(newMessages)
-          if (newMessages.length) {
-            setLastId(newMessages[newMessages.length - 1].id)
-            setMessages([...messages, ...newMessages])
-          }
+        <button disabled={ loading } onClick={(event) => {
+          if (loading)
+            return
+          setLoading(true);
+          fetch('/')
+            .then(
+              (response) => {
+                setLoading(false)
+                console.log(response)
+                if (!response.ok) {
+                  alert(`Failed: ${response}`);
+                  return;
+                }
+                // response.json().then((data) => {
+                response.text().then((data) => {
+                  // setData(data);
+                  const newMessages = getLatest(lastId)
+                  if (newMessages.length) {
+                    setLastId(newMessages[newMessages.length - 1].id)
+                    setMessages([...messages, ...newMessages])
+                  }
+                })
+              }
+            ).catch((err) => {
+              setLoading(false)
+              alert(err)
+            })
         }}>
-          Reload
+          { loading ? "Loading..." : "Reload" }
         </button>
-        <button onClick={(event) => setPendingMessages([...pendingMessages, {'name': 'you', 'body': 'hi'}]) }>
-          Post hi
-        </button>
+        <form>
+          <input type="text" placeholder="name" value={ name } onChange={(e) => setName(e.target.value) }></input>
+          <input type="text" placeholder="body" value={ body } onChange={(e) => setBody(e.target.value) }></input>
+          <input type="submit" value="Post" disabled={ !name.length || !body.length } onClick={(e) => {
+            e.preventDefault()
+            if (name.length && body.length) {
+              postMessage(name, body)
+              setBody('')
+            }
+          }}></input>
+        </form>
         <ul>
           {
             messages.map((m) =>
               <li>{ m.name }: { m.body }</li>
-            )
-          }
-          {
-            pendingMessages.map((m) =>
-              <li className="message-pending">{ m.name }: { m.body }</li>
             )
           }
         </ul>
