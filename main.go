@@ -24,7 +24,7 @@ type response struct {
 func main() {
 	log.Print("starting server...")
 	rand.Seed(time.Now().UTC().UnixNano())
-	http.HandleFunc("/", handler)
+	http.HandleFunc("/messages.json", messagesHandler)
 
 	// Determine port for HTTP service.
 	port := os.Getenv("PORT")
@@ -40,7 +40,7 @@ func main() {
 	}
 }
 
-func handler(w http.ResponseWriter, r *http.Request) {
+func messagesHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	id := rand.Int()
 	body := fmt.Sprintf("hello %v", id)

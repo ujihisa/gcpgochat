@@ -18,14 +18,16 @@ function App() {
         <button disabled={ loading } onClick={(event) => {
           if (loading)
             return
-          setLoading(true);
+          setLoading(true)
           fetch('/messages.json')
+          // fetch('http://localhost:8080/messages.json', {'mode': 'no-cors'})
             .then(
               (response) => {
                 setLoading(false)
                 if (!response.ok) {
-                  alert(`Failed: ${response}`);
-                  return;
+                  console.log(response)
+                  alert(`Failed: ${response}`)
+                  return
                 }
                 response.json().then((data) => {
                   const newMessages = data.messages
