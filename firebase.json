@@ -10,6 +10,12 @@
       ],
       "rewrites": [
         {
+          "source": "/messages.json",
+          "run": {
+            "serviceId": "gcpgochat"
+          }
+        },
+        {
           "source": "**",
           "destination": "/index.html"
         }

@@ -1,14 +1,6 @@
 import './App.css';
 import React, { useState  } from 'react';
 
-function getLatest(lastId) {
-  const dummy = [
-    {'id': 1, 'name': 'ujihisa', 'body': 'hello'},
-    {'id': 2, 'name': 'ujihisa', 'body': 'world'},
-  ]
-  return dummy.filter((x) => lastId < x.id)
-}
-
 function postMessage(name, body) {
   console.log("ok")
 }
@@ -27,19 +19,17 @@ function App() {
           if (loading)
             return
           setLoading(true);
-          fetch('/')
+          fetch('/messages.json')
             .then(
               (response) => {
                 setLoading(false)
-                console.log(response)
                 if (!response.ok) {
                   alert(`Failed: ${response}`);
                   return;
                 }
-                // response.json().then((data) => {
-                response.text().then((data) => {
-                  // setData(data);
-                  const newMessages = getLatest(lastId)
+                response.json().then((data) => {
+                  const newMessages = data.messages
+                  console.log(newMessages)
                   if (newMessages.length) {
                     setLastId(newMessages[newMessages.length - 1].id)
                     setMessages([...messages, ...newMessages])

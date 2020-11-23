@@ -8,6 +8,7 @@ import (
 	"math/rand"
 	"net/http"
 	"os"
+	"time"
 )
 
 type message struct {
@@ -22,6 +23,7 @@ type response struct {
 
 func main() {
 	log.Print("starting server...")
+	rand.Seed(time.Now().UTC().UnixNano())
 	http.HandleFunc("/", handler)
 
 	// Determine port for HTTP service.
